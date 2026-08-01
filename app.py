@@ -13,21 +13,21 @@ if "users" not in st.session_state:
     }
 
 # ------------------ Title ------------------
-st.title("🔐 Streamlit Practice")
+st.title("Streamlit Practice")
 
 # ------------------ Sidebar ------------------
-st.sidebar.title("📋 Menu")
+st.sidebar.title("Menu")
 page = st.sidebar.radio(
     "Choose Option",
-    ["🔑 Sign In", "📝 Sign Up"]
+    ["Sign In", "Sign Up"]
 )
 
 # ==================================================
 # SIGN IN PAGE
 # ==================================================
-if page == "🔑 Sign In":
+if page == "Sign In":
 
-    st.header("🔑 Sign In")
+    st.header("Sign In")
 
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
@@ -37,22 +37,22 @@ if page == "🔑 Sign In":
         if username in st.session_state.users:
 
             if st.session_state.users[username] == password:
-                st.success("✅ Login Successful")
-                st.write(f"### Welcome, {username} 👋")
+                st.success("Login Successful")
+                st.write(f"Welcome, {username}")
                 st.balloons()
 
             else:
-                st.error("❌ Incorrect Password")
+                st.error("Incorrect Password")
 
         else:
-            st.error("❌ User Not Found")
+            st.error("User Not Found")
 
 # ==================================================
 # SIGN UP PAGE
 # ==================================================
-elif page == "📝 Sign Up":
+elif page == "Sign Up":
 
-    st.header("📝 Sign Up")
+    st.header("Sign Up")
 
     new_username = st.text_input("Create Username")
     new_password = st.text_input(
@@ -78,5 +78,5 @@ elif page == "📝 Sign Up":
 
         else:
             st.session_state.users[new_username] = new_password
-            st.success("✅ Account Created Successfully!")
-            st.write("Now go to **Sign In** and login.")
+            st.success("Account Created Successfully!")
+            st.write("Now go to Sign In and login.")
