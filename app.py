@@ -6,69 +6,77 @@ st.set_page_config(
     layout="wide"
 )
 
-# -------------------------
-# Session State
-# -------------------------
-if "logged_in" not in st.session_state:
-    st.session_state.logged_in = False
+# ------------------ Session State ------------------
+if "users" not in st.session_state:
+    st.session_state.users = {
+        "admin": "1234"
+    }
 
-# -------------------------
-# Title
-# -------------------------
-st.title("🔐 Streamlit Login System")
+# ------------------ Title ------------------
+st.title("🔐 Streamlit Practice")
 
-# -------------------------
-# Sidebar
-# -------------------------
+# ------------------ Sidebar ------------------
 st.sidebar.title("📋 Menu")
-
-menu = st.sidebar.radio(
-    "Select Option",
-    ["🔑 Login", "🚪 Logout"]
+page = st.sidebar.radio(
+    "Choose Option",
+    ["🔑 Sign In", "📝 Sign Up"]
 )
 
-# =========================
-# LOGIN PAGE
-# =========================
-if menu == "🔑 Login":
+# ==================================================
+# SIGN IN PAGE
+# ==================================================
+if page == "🔑 Sign In":
 
-    st.header("🔑 Login Form")
+    st.header("🔑 Sign In")
 
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
 
-    if st.button("Login"):
+    if st.button("Sign In"):
 
-        if username == "admin" and password == "1234":
+        if username in st.session_state.users:
 
-            st.session_state.logged_in = True
+            if st.session_state.users[username] == password:
+                st.success("✅ Login Successful")
+                st.write(f"### Welcome, {username} 👋")
+                st.balloons()
 
-            st.success("✅ Login Successful!")
-            st.balloons()
+            else:
+                st.error("❌ Incorrect Password")
 
         else:
-            st.error("❌ Invalid Username or Password")
+            st.error("❌ User Not Found")
 
-    if st.session_state.logged_in:
-        st.info("👋 Welcome Admin!")
-        st.write("You are currently logged in.")
+# ==================================================
+# SIGN UP PAGE
+# ==================================================
+elif page == "📝 Sign Up":
 
-# =========================
-# LOGOUT PAGE
-# =========================
-elif menu == "🚪 Logout":
+    st.header("📝 Sign Up")
 
-    st.header("🚪 Logout")
+    new_username = st.text_input("Create Username")
+    new_password = st.text_input(
+        "Create Password",
+        type="password"
+    )
 
-    if st.session_state.logged_in:
+    confirm_password = st.text_input(
+        "Confirm Password",
+        type="password"
+    )
 
-        st.success("✅ You are currently logged in.")
+    if st.button("Create Account"):
 
-        if st.button("Logout"):
+        if new_username == "":
+            st.warning("Please enter username.")
 
-            st.session_state.logged_in = False
+        elif new_username in st.session_state.users:
+            st.error("Username already exists.")
 
-            st.warning("👋 Logged Out Successfully!")
+        elif new_password != confirm_password:
+            st.error("Passwords do not match.")
 
-    else:
-        st.info("ℹ️ You are already logged out.")
+        else:
+            st.session_state.users[new_username] = new_password
+            st.success("✅ Account Created Successfully!")
+            st.write("Now go to **Sign In** and login.")
