@@ -2,7 +2,7 @@ import streamlit as st
 
 st.set_page_config(
     page_title="Login System",
-    page_icon="🔐",
+    page_icon=":lock:",
     layout="centered"
 )
 
@@ -86,17 +86,14 @@ if "users" not in st.session_state:
     }
 
 # ------------------ Title ------------------
-st.markdown("<h1>🔐 Streamlit Login System</h1>", unsafe_allow_html=True)
+st.markdown("<h1>Streamlit Login System</h1>", unsafe_allow_html=True)
 
 # ------------------ Sidebar ------------------
-st.sidebar.markdown("## 📋 Menu")
+st.sidebar.markdown("## Menu")
 page = st.sidebar.radio(
     "Choose Option",
     ["Sign In", "Sign Up"]
 )
-
-st.sidebar.markdown("---")
-st.sidebar.info("Demo login: **admin** / **1234**")
 
 # ==================================================
 # SIGN IN PAGE
@@ -104,25 +101,25 @@ st.sidebar.info("Demo login: **admin** / **1234**")
 if page == "Sign In":
 
     st.markdown('<div class="login-card">', unsafe_allow_html=True)
-    st.markdown("<h2>👋 Welcome Back</h2>", unsafe_allow_html=True)
+    st.markdown("<h2>Welcome Back</h2>", unsafe_allow_html=True)
 
     username = st.text_input("Username", placeholder="Enter your username")
     password = st.text_input("Password", type="password", placeholder="Enter your password")
 
-    if st.button("Sign In 🚀"):
+    if st.button("Sign In"):
 
         if username in st.session_state.users:
 
             if st.session_state.users[username] == password:
-                st.success("✅ Login Successful")
-                st.markdown(f"### Welcome, **{username}**! 🎉")
+                st.success("Login Successful")
+                st.markdown(f"### Welcome, **{username}**!")
                 st.balloons()
 
             else:
-                st.error("❌ Incorrect Password")
+                st.error("Incorrect Password")
 
         else:
-            st.error("⚠️ User Not Found")
+            st.error("User Not Found")
 
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -132,7 +129,7 @@ if page == "Sign In":
 elif page == "Sign Up":
 
     st.markdown('<div class="login-card">', unsafe_allow_html=True)
-    st.markdown("<h2>📝 Create Account</h2>", unsafe_allow_html=True)
+    st.markdown("<h2>Create Account</h2>", unsafe_allow_html=True)
 
     new_username = st.text_input("Create Username", placeholder="Choose a username")
     new_password = st.text_input(
@@ -147,20 +144,20 @@ elif page == "Sign Up":
         placeholder="Re-enter your password"
     )
 
-    if st.button("Create Account ✨"):
+    if st.button("Create Account"):
 
         if new_username == "":
-            st.warning("⚠️ Please enter username.")
+            st.warning("Please enter username.")
 
         elif new_username in st.session_state.users:
-            st.error("❌ Username already exists.")
+            st.error("Username already exists.")
 
         elif new_password != confirm_password:
-            st.error("❌ Passwords do not match.")
+            st.error("Passwords do not match.")
 
         else:
             st.session_state.users[new_username] = new_password
-            st.success("✅ Account Created Successfully!")
-            st.write("Now go to **Sign In** and login. 🔑")
+            st.success("Account Created Successfully!")
+            st.write("Now go to **Sign In** and login.")
 
     st.markdown('</div>', unsafe_allow_html=True)
