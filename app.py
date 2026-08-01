@@ -1,113 +1,74 @@
 import streamlit as st
 
-# ---------------- Page Config ----------------
 st.set_page_config(
-    page_title="Modern Login",
+    page_title="Login System",
     page_icon="🔐",
-    layout="centered"
+    layout="wide"
 )
 
-# ---------------- Custom CSS ----------------
-st.markdown("""
-<style>
+# -------------------------
+# Session State
+# -------------------------
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
 
-/* Background */
-.stApp{
-    background: linear-gradient(135deg,#4F46E5,#06B6D4,#3B82F6);
-    background-size: 400% 400%;
-}
+# -------------------------
+# Title
+# -------------------------
+st.title("🔐 Streamlit Login System")
 
-/* Hide Streamlit Menu */
-#MainMenu {visibility:hidden;}
-footer {visibility:hidden;}
-header {visibility:hidden;}
+# -------------------------
+# Sidebar
+# -------------------------
+st.sidebar.title("📋 Menu")
 
-/* Login Card */
-.login-card{
-    background: rgba(255,255,255,0.15);
-    backdrop-filter: blur(18px);
-    padding:40px;
-    border-radius:20px;
-    box-shadow:0px 8px 30px rgba(0,0,0,0.3);
-    border:1px solid rgba(255,255,255,0.2);
-}
+menu = st.sidebar.radio(
+    "Select Option",
+    ["🔑 Login", "🚪 Logout"]
+)
 
-/* Title */
-.title{
-    text-align:center;
-    color:white;
-    font-size:42px;
-    font-weight:bold;
-}
+# =========================
+# LOGIN PAGE
+# =========================
+if menu == "🔑 Login":
 
-.subtitle{
-    text-align:center;
-    color:white;
-    margin-bottom:25px;
-    font-size:18px;
-}
+    st.header("🔑 Login Form")
 
-/* Input Box */
-.stTextInput>div>div>input{
-    border-radius:10px;
-    border:2px solid #ffffff;
-    padding:12px;
-    background:rgba(255,255,255,0.9);
-}
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
 
-/* Login Button */
-.stButton>button{
-    width:100%;
-    border-radius:10px;
-    height:50px;
-    font-size:18px;
-    font-weight:bold;
-    background:#00E676;
-    color:black;
-    border:none;
-}
+    if st.button("Login"):
 
-.stButton>button:hover{
-    background:#00C853;
-    color:white;
-}
+        if username == "admin" and password == "1234":
 
-/* Sidebar */
-section[data-testid="stSidebar"]{
-    background:#111827;
-}
+            st.session_state.logged_in = True
 
-section[data-testid="stSidebar"] *{
-    color:white;
-}
+            st.success("✅ Login Successful!")
+            st.balloons()
 
-</style>
-""", unsafe_allow_html=True)
+        else:
+            st.error("❌ Invalid Username or Password")
 
-# ---------------- Sidebar ----------------
-st.sidebar.title("📋 MENU")
-st.sidebar.write("### Login Demo")
-st.sidebar.info("Username: admin\n\nPassword: 1234")
+    if st.session_state.logged_in:
+        st.info("👋 Welcome Admin!")
+        st.write("You are currently logged in.")
 
-# ---------------- Title ----------------
-st.markdown('<h1 class="title">🔐 Secure Login</h1>', unsafe_allow_html=True)
-st.markdown('<p class="subtitle">Welcome Back! Please Login</p>', unsafe_allow_html=True)
+# =========================
+# LOGOUT PAGE
+# =========================
+elif menu == "🚪 Logout":
 
-# ---------------- Login Card ----------------
-st.markdown('<div class="login-card">', unsafe_allow_html=True)
+    st.header("🚪 Logout")
 
-username = st.text_input("👤 Username")
-password = st.text_input("🔑 Password", type="password")
+    if st.session_state.logged_in:
 
-login = st.button("🚀 LOGIN")
+        st.success("✅ You are currently logged in.")
 
-st.markdown("</div>", unsafe_allow_html=True)
+        if st.button("Logout"):
 
-# ---------------- Login Logic ----------------
-if login:
-    if username == "admin" and password == "1234":
-        st.success("✅ Login Successful!")
-        st.balloons()
-        st.markdown("## 🎉 Welcome Admin")
+            st.session_state.logged_in = False
+
+            st.warning("👋 Logged Out Successfully!")
+
     else:
-        st.error("❌ Invalid Username or Password")
+        st.info("ℹ️ You are already logged out.")
